@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import java.util.List;
 public class Diet {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "DIET_SEQ", sequenceName = "DIET_SEQ", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

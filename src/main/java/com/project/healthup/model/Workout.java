@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,8 @@ import java.util.List;
 @Table(name = "workout")
 public class Workout {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "WORKOUT_SEQ")
+    @SequenceGenerator(name = "WORKOUT_SEQ", sequenceName = "WORKOUT_SEQ", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 
