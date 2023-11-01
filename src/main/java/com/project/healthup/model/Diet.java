@@ -21,7 +21,7 @@ import java.util.List;
 @Table(name = "diet")
 public class Diet {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DIET_SEQ")
     @SequenceGenerator(name = "DIET_SEQ", sequenceName = "DIET_SEQ", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;

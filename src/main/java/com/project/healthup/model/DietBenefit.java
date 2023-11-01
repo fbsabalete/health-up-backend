@@ -18,7 +18,7 @@ import lombok.Setter;
 @Table(name = "diet_benefit")
 public class DietBenefit {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DIET_BENEFIT_SEQ")
     @SequenceGenerator(name = "DIET_BENEFIT_SEQ", sequenceName = "DIET_BENEFIT_SEQ", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
