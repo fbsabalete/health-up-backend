@@ -39,7 +39,7 @@ public class Recipe {
     private int fatAmountGrams;
     private int carbsAmountGrams;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "recipe_tag",
             joinColumns = @JoinColumn(name = "recipe_id"),
     inverseJoinColumns = @JoinColumn(name = "tag_id"))
