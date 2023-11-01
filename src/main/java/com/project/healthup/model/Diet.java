@@ -28,16 +28,16 @@ public class Diet {
     private String dietName;
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "diet", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "diet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DietBenefit> benefits;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "diet", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "diet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DietAllowedFood> allowedFood;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "diet", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "diet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DietBannedFood> bannedFood;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "diet", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "diet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DietMenuMeal> menuItems;
 
 }
