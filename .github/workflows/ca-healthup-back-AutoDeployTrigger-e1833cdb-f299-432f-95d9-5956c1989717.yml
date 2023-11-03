@@ -1,0 +1,42 @@
+name: Trigger auto deployment for ca-healthup-back
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/ca-healthup-back-AutoDeployTrigger-e1833cdb-f299-432f-95d9-5956c1989717.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.CAHEALTHUPBACK_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: docker.io
+          registryUsername: ${{ secrets.CAHEALTHUPBACK_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.CAHEALTHUPBACK_REGISTRY_PASSWORD }}
+          containerAppName: ca-healthup-back
+          resourceGroup: rg-healthup
+          imageToBuild: fbsabalete/ca-healthup-back:${{ github.sha }}
+          
+
+     
+
