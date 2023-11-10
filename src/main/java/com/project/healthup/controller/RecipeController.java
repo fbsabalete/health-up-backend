@@ -6,6 +6,7 @@ import com.project.healthup.dto.RecipeDetailsDTO;
 import com.project.healthup.dto.RecipePostDTO;
 import com.project.healthup.service.RecipeService;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -43,13 +44,13 @@ public class RecipeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveRecipe(@RequestBody RecipePostDTO dto) {
+    public void saveRecipe(@RequestBody @Valid RecipePostDTO dto) {
         service.save(dto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateRecipe(@RequestBody RecipePostDTO dto, @PathVariable Long id) {
+    public void updateRecipe(@RequestBody @Valid RecipePostDTO dto, @PathVariable Long id) {
         service.update(id, dto);
     }
 
