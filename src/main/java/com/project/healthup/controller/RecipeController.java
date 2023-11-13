@@ -37,6 +37,14 @@ public class RecipeController {
         return service.getRecipes(name, pageable);
     }
 
+    @GetMapping("/tag/{tagId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PageableAsQueryParam
+    public PageResponse<RecipeDTO> findByTag(@PageableDefault(sort = "id") @Parameter(hidden = true) Pageable pageable,
+                                              @PathVariable Long tagId) {
+        return service.findByTag(tagId, pageable);
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public RecipeDetailsDTO getRecipeDetails(@PathVariable Long id) {
