@@ -5,6 +5,7 @@ import com.project.healthup.dto.WorkoutDTO;
 import com.project.healthup.dto.WorkoutPostDTO;
 import com.project.healthup.service.WorkoutService;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -44,13 +45,13 @@ public class WorkoutController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveWorkout(@RequestBody WorkoutPostDTO dto) {
+    public void saveWorkout(@RequestBody @Valid WorkoutPostDTO dto) {
         workoutService.save(dto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateWorkout(@RequestBody WorkoutPostDTO dto, @PathVariable Long id) {
+    public void updateWorkout(@RequestBody @Valid WorkoutPostDTO dto, @PathVariable Long id) {
         workoutService.update(id, dto);
     }
 
