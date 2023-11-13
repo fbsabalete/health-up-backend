@@ -26,4 +26,5 @@ public class DietDetailsDTO implements Serializable {
     private List<DietAllowedFoodDto> allowedFood;
     private List<DietBannedFoodDto> bannedFood;
     private List<DietMenuMealDto> menuItems;
+    private List<TagDto> tags;
 }

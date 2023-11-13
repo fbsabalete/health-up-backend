@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * DTO for {@link com.project.healthup.model.Diet}
@@ -21,4 +22,6 @@ public class DietDTO implements Serializable {
     private String imageUrl;
     private String dietName;
     private String description;
+    private List<TagDto> tags;
+
 }

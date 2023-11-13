@@ -10,6 +10,7 @@ import com.project.healthup.mapper.DietMapper;
 import com.project.healthup.model.Diet;
 import com.project.healthup.repository.DietRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,14 +25,21 @@ public class DietService {
     private final DietRepository dietRepository;
     private static final DietMapper mapper = Mappers.getMapper(DietMapper.class);
 
-    public PageResponse<DietDTO> getDiets(Pageable pageable) {
-        Page<DietDTO> result = dietRepository.findAll(pageable)
-                .map(mapper::toDto);
+    public PageResponse<DietDTO> getDiets(String name, Pageable pageable) {
+        Page<DietDTO> result;
+        if(StringUtils.isNotBlank(name)) {
+            result = dietRepository.findByDietNameContainsIgnoreCase(name, pageable)
+                    .map(mapper::toDto);
+        } else {
+            result = dietRepository.findAll(pageable)
+                    .map(mapper::toDto);
+        }
         return PageResponse.of(
                 result.getContent(),
                 MetaData.of(result.getTotalElements(), result.getTotalPages(), result.hasNext())
         );
     }
+
 
     public DietDetailsDTO findById(Long id) {
         return dietRepository.findById(id)

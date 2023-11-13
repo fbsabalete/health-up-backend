@@ -6,6 +6,7 @@ import com.project.healthup.dto.RecipeDetailsDTO;
 import com.project.healthup.dto.RecipePostDTO;
 import com.project.healthup.service.RecipeService;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,8 +33,17 @@ public class RecipeController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PageableAsQueryParam
-    public PageResponse<RecipeDTO> getRecipes(@PageableDefault(sort = "id") @Parameter(hidden = true) Pageable pageable) {
-        return service.getRecipes(pageable);
+    public PageResponse<RecipeDTO> getRecipes(@PageableDefault(sort = "id") @Parameter(hidden = true) Pageable pageable,
+                                              @RequestParam(required = false) String name) {
+        return service.getRecipes(name, pageable);
+    }
+
+    @GetMapping("/tag/{tagId}")
+    @ResponseStatus(HttpStatus.OK)
+    @PageableAsQueryParam
+    public PageResponse<RecipeDTO> findByTag(@PageableDefault(sort = "id") @Parameter(hidden = true) Pageable pageable,
+                                              @PathVariable Long tagId) {
+        return service.findByTag(tagId, pageable);
     }
 
     @GetMapping("/{id}")
@@ -43,13 +54,13 @@ public class RecipeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveRecipe(@RequestBody RecipePostDTO dto) {
+    public void saveRecipe(@RequestBody @Valid RecipePostDTO dto) {
         service.save(dto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateRecipe(@RequestBody RecipePostDTO dto, @PathVariable Long id) {
+    public void updateRecipe(@RequestBody @Valid RecipePostDTO dto, @PathVariable Long id) {
         service.update(id, dto);
     }
 

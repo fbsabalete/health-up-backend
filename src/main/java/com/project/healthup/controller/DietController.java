@@ -6,6 +6,7 @@ import com.project.healthup.dto.DietPostDTO;
 import com.project.healthup.dto.PageResponse;
 import com.project.healthup.service.DietService;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,8 +33,9 @@ public class DietController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PageableAsQueryParam
-    public PageResponse<DietDTO> getDiets(@PageableDefault(sort = "id") @Parameter(hidden = true) Pageable pageable) {
-        return service.getDiets(pageable);
+    public PageResponse<DietDTO> getDiets(@PageableDefault(sort = "id") @Parameter(hidden = true) Pageable pageable,
+                                          @RequestParam(required = false) String name) {
+        return service.getDiets(name, pageable);
     }
 
     @GetMapping("/{id}")
@@ -43,13 +46,13 @@ public class DietController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveDiet(@RequestBody DietPostDTO dto) {
+    public void saveDiet(@RequestBody @Valid DietPostDTO dto) {
         service.save(dto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateDiet(@RequestBody DietPostDTO dto, @PathVariable Long id) {
+    public void updateDiet(@RequestBody @Valid DietPostDTO dto, @PathVariable Long id) {
         service.update(id, dto);
     }
 

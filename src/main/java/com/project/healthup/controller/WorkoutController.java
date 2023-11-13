@@ -5,6 +5,7 @@ import com.project.healthup.dto.WorkoutDTO;
 import com.project.healthup.dto.WorkoutPostDTO;
 import com.project.healthup.service.WorkoutService;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,8 +32,9 @@ public class WorkoutController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PageableAsQueryParam
-    public PageResponse<WorkoutDTO> getWorkouts(@PageableDefault(sort = "id") @Parameter(hidden = true) Pageable pageable) {
-        return workoutService.getWorkouts(pageable);
+    public PageResponse<WorkoutDTO> getWorkouts(@PageableDefault(sort = "id") @Parameter(hidden = true) Pageable pageable,
+                                                @RequestParam(required = false) String name) {
+        return workoutService.getWorkouts(name, pageable);
     }
 
     @GetMapping("/{id}")
@@ -42,13 +45,13 @@ public class WorkoutController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveWorkout(@RequestBody WorkoutPostDTO dto) {
+    public void saveWorkout(@RequestBody @Valid WorkoutPostDTO dto) {
         workoutService.save(dto);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateWorkout(@RequestBody WorkoutPostDTO dto, @PathVariable Long id) {
+    public void updateWorkout(@RequestBody @Valid WorkoutPostDTO dto, @PathVariable Long id) {
         workoutService.update(id, dto);
     }
 

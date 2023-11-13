@@ -9,6 +9,7 @@ import com.project.healthup.mapper.WorkoutMapper;
 import com.project.healthup.model.Workout;
 import com.project.healthup.repository.WorkoutRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +24,15 @@ public class WorkoutService {
     private final WorkoutRepository workoutRepository;
     private static final WorkoutMapper mapper = Mappers.getMapper(WorkoutMapper.class);
 
-    public PageResponse<WorkoutDTO> getWorkouts(Pageable pageable) {
-        Page<WorkoutDTO> result = workoutRepository.findAll(pageable)
-                .map(mapper::toDto);
+    public PageResponse<WorkoutDTO> getWorkouts(String name, Pageable pageable) {
+        Page<WorkoutDTO> result;
+        if(StringUtils.isNotBlank(name)) {
+            result = workoutRepository.findByWorkoutNameContainsIgnoreCase(name, pageable)
+                    .map(mapper::toDto);
+        } else {
+            result = workoutRepository.findAll(pageable)
+                    .map(mapper::toDto);
+        }
         return PageResponse.of(
                 result.getContent(),
                 MetaData.of(result.getTotalElements(), result.getTotalPages(), result.hasNext())

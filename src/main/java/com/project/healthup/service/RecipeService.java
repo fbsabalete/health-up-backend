@@ -10,6 +10,7 @@ import com.project.healthup.mapper.RecipeMapper;
 import com.project.healthup.model.Recipe;
 import com.project.healthup.repository.RecipeRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +25,23 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private static final RecipeMapper mapper = Mappers.getMapper(RecipeMapper.class);
 
-    public PageResponse<RecipeDTO> getRecipes(Pageable pageable) {
-        Page<RecipeDTO> result = recipeRepository.findAll(pageable)
+    public PageResponse<RecipeDTO> getRecipes(String name, Pageable pageable) {
+        Page<RecipeDTO> result;
+        if(StringUtils.isNotBlank(name)) {
+            result = recipeRepository.findByRecipeNameContainsIgnoreCase(name, pageable)
+                    .map(mapper::toDto);
+        } else {
+            result = recipeRepository.findAll(pageable)
+                    .map(mapper::toDto);
+        }
+        return PageResponse.of(
+                result.getContent(),
+                MetaData.of(result.getTotalElements(), result.getTotalPages(), result.hasNext())
+        );
+    }
+
+    public PageResponse<RecipeDTO> findByTag(Long tagId, Pageable pageable) {
+        Page<RecipeDTO> result = recipeRepository.findByTags_Id(tagId, pageable)
                 .map(mapper::toDto);
         return PageResponse.of(
                 result.getContent(),
