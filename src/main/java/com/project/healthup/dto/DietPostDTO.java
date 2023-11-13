@@ -35,4 +35,6 @@ public class DietPostDTO implements Serializable {
     private List<DietBannedFoodDto> bannedFood;
     @NotNull
     private List<DietMenuMealDto> menuItems;
+    @NotNull
+    private List<TagDto> tags;
 }

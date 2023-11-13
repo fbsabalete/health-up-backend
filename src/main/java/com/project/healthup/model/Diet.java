@@ -7,6 +7,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -41,5 +44,12 @@ public class Diet {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "diet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DietMenuMeal> menuItems;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "diet_tag",
+            joinColumns = @JoinColumn(name = "diet_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tag> tags;
+
 
 }
