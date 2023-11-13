@@ -24,9 +24,15 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private static final RecipeMapper mapper = Mappers.getMapper(RecipeMapper.class);
 
-    public PageResponse<RecipeDTO> getRecipes(Pageable pageable) {
-        Page<RecipeDTO> result = recipeRepository.findAll(pageable)
-                .map(mapper::toDto);
+    public PageResponse<RecipeDTO> getRecipes(String name, Pageable pageable) {
+        Page<RecipeDTO> result;
+        if(StringUtils.isNotBlank(name)) {
+            result = recipeRepository.findByRecipeNameContainsIgnoreCase(name, pageable)
+                    .map(mapper::toDto);
+        } else {
+            result = recipeRepository.findAll(pageable)
+                    .map(mapper::toDto);
+        }
         return PageResponse.of(
                 result.getContent(),
                 MetaData.of(result.getTotalElements(), result.getTotalPages(), result.hasNext())
